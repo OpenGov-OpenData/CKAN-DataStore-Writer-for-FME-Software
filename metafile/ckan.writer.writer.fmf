@@ -1,0 +1,268 @@
+! ----------------------------------------------------------------------
+! CKAN format metafile
+! ----------------------------------------------------------------------
+
+! ----------------------------------------------------------------------
+! Define the format name.
+! ----------------------------------------------------------------------
+DEFAULT_MACRO FORMAT_SHORT_NAME CKAN WRITER
+DEFAULT_MACRO DESTINATION_DOMAIN ""
+
+SOURCE_READER ckan.writer.writer _DESTINATION_DOMAIN    "$(DESTINATION_DOMAIN)"          \
+                                 _DESTINATION_APIKEY    "$(DESTINATION_APIKEY)"          \
+                                 _PACKAGE_ID            "$(PACKAGE_ID)"                  \
+                                 _RESOURCE_NAME         "$(RESOURCE_NAME)"               \
+                                 _RESOURCE_DESCRIPTION  "$(RESOURCE_DESCRIPTION)"        \
+                                 _UPDATE_RESOURCE       "$(UPDATE_RESOURCE)"             \
+                                 _RESOURCE_ID           "$(RESOURCE_ID)"                 \
+                                 _BATCH_SIZE            "$(BATCH_SIZE)"                  \
+                                 _PRIMARY_KEY           "$(PRIMARY_KEY)"                 \
+                                 EXPOSED_ATTRS          "$($(FORMAT_SHORT_NAME)_EXPOSE_FORMAT_ATTRS)"
+
+FORMAT_NAME ckan.writer.writer
+FORMAT_TYPE JAVA
+
+
+! ----------------------------------------------------------------------
+! Configure the schema scanner
+! ----------------------------------------------------------------------
+IGNORE_ATTRIBUTES_WITH_PREFIX fme_
+IGNORE_ATTRIBUTES_WITH_PREFIX ckan_
+
+GEOMETRY_TYPE_FIELD ckan_type
+
+GEOMETRY_ATTRIBUTE_PREFIX ckan_type
+
+
+! ----------------------------------------------------------------------
+! Specify the def line and correlation line templates
+! ----------------------------------------------------------------------
+DEF_LINE_TEMPLATE {FME_GEN_GROUP_NAME}
+CORR_LINE_TEMPLATE {FME_GEN_GROUP_NAME} ckan_type {FME_GEN_GEOMETRY}
+DEF_LINE_BREAK ATTRIB_CHANGE
+
+
+! ----------------------------------------------------------------------
+! Define the preamble for when CKAN Writer is the source format
+! ----------------------------------------------------------------------
+SOURCE_PREAMBLE
+"DEFAULT_MACRO" SourceDataset NULL
+END_SOURCE_PREAMBLE
+
+SOURCE_SETTINGS
+
+GUI GROUP DESTINATION_DOMAIN%DESTINATION_APIKEY%RESOURCE_ID CKAN Connection
+
+DEFAULT_VALUE DESTINATION_DOMAIN "" 
+GUI TEXT DESTINATION_DOMAIN Domain:
+
+DEFAULT_VALUE DESTINATION_APIKEY ""
+GUI TEXT DESTINATION_APIKEY API Key:
+
+DEFAULT_VALUE RESOURCE_ID ""
+GUI TEXT RESOURCE_ID Resource ID:
+
+END_SOURCE_SETTINGS
+
+WORKBENCH_SOURCE_PREAMBLE
+
+END_WORKBENCH_SOURCE_PREAMBLE
+
+SOURCE_DATASET \"$[SourceDataset]\"
+
+
+! ----------------------------------------------------------------------
+! Define the preamble for when CKAN Writer is the destination format
+! ----------------------------------------------------------------------
+DESTINATION_PREAMBLE
+"DEFAULT_MACRO" DestDataset NULL
+END_DESTINATION_PREAMBLE
+
+DESTINATION_SETTINGS
+
+GUI GROUP DESTINATION_DOMAIN%DESTINATION_APIKEY CKAN Connection
+
+DEFAULT_VALUE DESTINATION_DOMAIN "" 
+GUI TEXT DESTINATION_DOMAIN Domain:
+
+DEFAULT_VALUE DESTINATION_APIKEY ""
+GUI TEXT DESTINATION_APIKEY API Key:
+
+GUI GROUP PACKAGE_ID%RESOURCE_NAME%RESOURCE_DESCRIPTION%UPDATE_RESOURCE Resource Details
+
+DEFAULT_VALUE PACKAGE_ID ""
+GUI TEXT PACKAGE_ID Package ID:
+
+DEFAULT_VALUE RESOURCE_NAME ""
+GUI TEXT RESOURCE_NAME Resource Title:
+
+DEFAULT_VALUE RESOURCE_DESCRIPTION ""
+GUI OPTIONAL TEXT RESOURCE_DESCRIPTION Description:
+
+DEFAULT_VALUE UPDATE_RESOURCE NO
+GUI ACTIVEDISCLOSUREGROUP UPDATE_RESOURCE FME_DISCLOSURE_CLOSED%RESOURCE_ID Update Existing Resource
+
+DEFAULT_VALUE RESOURCE_ID ""
+GUI TEXT RESOURCE_ID Resource ID:
+
+GUI DISCLOSUREGROUP ADV_PARM_GROUP BATCH_SIZE%PRIMARY_KEY Advanced Settings
+
+DEFAULT_VALUE BATCH_SIZE 5000
+GUI OPTIONAL INTEGER BATCH_SIZE Batch Size:
+
+DEFAULT_VALUE PRIMARY_KEY ""
+GUI OPTIONAL TEXT PRIMARY_KEY Primary Key:
+
+END_DESTINATION_SETTINGS
+
+DESTINATION_DATASET \"$[DestDataset]\"
+
+
+! ----------------------------------------------------------------------
+! Specify the def line template
+! ----------------------------------------------------------------------
+INCLUDE [if {"$(FMEGEN_DIRECTION)" == "Source"} { \
+              puts {DEF_LINE_TEMPLATE {FME_GEN_GROUP_NAME} } ; \
+            } else {                                   \
+              puts {DEF_LINE_TEMPLATE {FME_GEN_GROUP_NAME} ckan_field_names INHERIT_FROM_WRITER };  \
+            } ]
+
+
+! ----------------------------------------------------------------------
+! A new definition line is required whenever there is a change in attribution.
+! ----------------------------------------------------------------------
+DEF_LINE_BREAK ATTRIB_CHANGE
+
+
+! ----------------------------------------------------------------------
+! Define the template for the correlation lines.
+! ----------------------------------------------------------------------
+CORR_LINE_TEMPLATE {FME_GEN_GROUP_NAME} ckan_type {FME_GEN_GEOMETRY}
+
+
+! ----------------------------------------------------------------------
+! Accept any kind of geometry - the geometry will be lost but the attributes will be kept
+! ----------------------------------------------------------------------
+GEOM_MAP ckan_none         fme_no_geom
+GEOM_MAP ckan_point        fme_point
+GEOM_MAP ckan_none         fme_point
+GEOM_MAP ckan_none         fme_line
+GEOM_MAP ckan_none         fme_polygon
+GEOM_MAP ckan_none         fme_text
+GEOM_MAP ckan_none         fme_ellipse
+GEOM_MAP ckan_none         fme_arc
+GEOM_MAP ckan_none         fme_rectangle
+GEOM_MAP ckan_none         fme_rounded_rectangle
+GEOM_MAP fme_no_map        fme_no_geom
+GEOM_MAP fme_no_map        fme_no_map
+GEOM_MAP ckan_none         fme_collection
+
+         
+! ----------------------------------------------------------------------
+! Define the mappings of the attribute types for CKAN
+! ----------------------------------------------------------------------
+ATTR_TYPE_MAP  text                    fme_buffer                 \
+               auto                    fme_buffer                 \
+               text-                   fme_varchar(width)         \
+               char(width)             fme_varchar(width)         \
+               text-                   fme_char(width)            \
+               char(width)             fme_char(width)            \
+               char(20)                fme_datetime               \
+               char(12)                fme_time                   \
+               char(8)                 fme_date                   \
+               char(1)                 fme_char                   \
+               float                   fme_real64                 \
+               x_coordinate            fme_real64                 \
+               y_coordinate            fme_real64                 \
+               z_coordinate            fme_real64                 \
+               float                   fme_real32                 \
+               int                     fme_int32                  \
+               int                     fme_uint32                 \
+               int                     fme_int64                  \
+               int                     fme_uint64                 \
+               logical                 fme_boolean                \
+               int                     fme_int16                  \
+               int                     fme_uint16                 \
+               int                     fme_uint8                  \
+               number(width,decimal)   fme_decimal(width,decimal) 
+
+FORMAT_PARAMETER DEFAULT_ATTR_TYPE auto
+
+ATTRIBUTE_INVALID_CHARS "\"*{}$"
+
+
+! ----------------------------------------------------------------------
+! Add defline parms
+! ----------------------------------------------------------------------
+!INCLUDE [                                                  \
+!   if { ("$(FMEGEN_DIRECTION)" == "Destination") }         \
+!   {  puts                                                 \
+!      {  WORKBENCH_DEFLINE_PARMS                           \
+!         "GUI OPTIONAL TEXT description Description" ""    \
+!      };                                                   \
+!   };                                                      \
+!]
+
+
+! ----------------------------------------------------------------------
+! Define the attribute case for CKAN attributes.
+! ----------------------------------------------------------------------
+ATTRIBUTE_CASE ANY
+
+
+! ----------------------------------------------------------------------
+! For genericization support, we must identify which attribute holds the 
+! 'geometry type' of the feature since the CORR_LINE_TEMPLATE does not.
+! ----------------------------------------------------------------------
+GENERICIZE_GEOMTYPE_ATTR_NAME ckan_type
+
+
+! ----------------------------------------------------------------------
+! Set the geometry TYPE
+! ----------------------------------------------------------------------
+GEOMETRY_TYPE_FIELD ckan_type
+
+
+! ----------------------------------------------------------------------
+! Make the character encoding and advanced parameter in Workbench
+! ----------------------------------------------------------------------
+FORMAT_PARAMETER ADVANCED_PARMS _ENCODING               \
+                                CKAN_OUT_ENCODING       \
+                                _WRITE_UTF8_BOM
+
+MACRO SourceExposableAttrs
+MACRO DestExposableAttrs
+
+INCLUDE [if {"$(FMEGEN_DIRECTION)" == "Source"} {   \
+            puts {MACRO DestExposableAttrs};        \
+         } else {                                   \
+            puts {MACRO SourceExposableAttrs};      \
+         }]
+
+WORKBENCH_EXPOSABLE_ATTRIBUTES                  \
+   $(SourceExposableAttrs)                      \
+   $(DestExposableAttrs)                        \
+   ckan_type                         char(50)
+
+
+! ----------------------------------------------------------------------
+! Setting the INVALID characters which cannot be used for file names
+! \ / " : ? * < > | are the invalid characters for windows file system
+! \ is used to create sub folders and is thus valid.
+! ----------------------------------------------------------------------
+FEATURE_TYPE_INVALID_CHARS "/\":?*<>|"
+
+
+! ----------------------------------------------------------------------
+! Illegal user attribute list
+! ----------------------------------------------------------------------
+MACRO _extra_reserved_words_    \
+            ckan_type           \
+            ckan_row
+
+DEST_ILLEGAL_ATTR_LIST      $(_extra_reserved_words_)
+
+FORMAT_PARAMETER DATASET_NAME CKAN DataStore
+FORMAT_PARAMETER FEATURE_TYPE_NAME Dataset
+FORMAT_PARAMETER FEATURE_TYPE_DEFAULT_NAME Dataset1
+FORMAT_PARAMETER WRITER_DATASET_HINT Type the name of the CKAN account
