@@ -38,7 +38,7 @@ Next click on the Parameters button to enter the following:
 
 **Advanced Settings:** You can change the _Batch Size_ and _Primary Key_ here
 
-**Batch Size:** The writer will upload rows of data in batches of this size
+**Batch Size:** The writer will upload rows of data in batches of this amount
 
-**Primary Key:** If a Primary Key is specified then data will be upserted instead of inserted
-	Multiple fields can be specified as the Primary Key, use double semicolons to delineate the fields (eg: field1;;field2)
+**Primary Key:** If a Primary Key is specified then data will be upserted instead of inserted.
+Multiple fields can be specified as the Primary Key, use double semicolons to delineate the fields (eg: field1;;field2)
