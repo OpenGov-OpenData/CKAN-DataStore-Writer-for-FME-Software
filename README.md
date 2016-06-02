@@ -21,7 +21,7 @@ The CKAN DataStore writer plugin will upload the output of a FME workflow to a C
 To add a new writer to the FME Workbench click on the Writers menu located at the top and click Add Writer.
 (As an alternative the shortcut Ctrl+Alt+W can be used)
 
-In the window labled "Add Writer" go to the Format field and select "CKAN Writer" from the dropdown menu.
+In the window labled "Add Writer" go to the Format field and select "CKAN DataStore Writer" from the dropdown menu.
 Next click on the Parameters button to enter the following:
 
 **Domain:** Url of the CKAN data portal (eg: http://demo.ckan.org)
