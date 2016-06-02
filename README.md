@@ -5,13 +5,13 @@ CKAN DataStore Writer for FME® Software
 ### Installation
 
 Copy the files below to their respective folders under the FME installation directory:
-- ../fme/formatsinfo/ckan.db
-- ../fme/metafile/ckan.writer.writer.fmf
-- ../fme/plugins/ckan.jar
-- ../fme/plugins/gson-2.2.jar
-- ../fme/plugins/httpclient-4.2.jar
-- ../fme/plugins/httpcore-4.2.jar
-- ../fme/plugins/httpmime-4.2.jar
+- ../FME/formatsinfo/ckan\_datastore.db
+- ../FME/metafile/ckan.datastore.writer.fmf
+- ../FME/plugins/ckan\_datastore.jar
+- ../FME/plugins/gson-2.2.jar
+- ../FME/plugins/httpclient-4.2.jar
+- ../FME/plugins/httpcore-4.2.jar
+- ../FME/plugins/httpmime-4.2.jar
 
 
 ### User Guide
@@ -40,5 +40,6 @@ Next click on the Parameters button to enter the following:
 
 **Batch Size:** The writer will upload rows of data in batches of this size
 
-**Primary Key:** If a Primary Key is specified then data will be upserted instead of inserted
-	Multiple fields can be specified as the Primary Key, use double semicolons to delineate the fields (eg: field1;;field2)
+**Primary Key:** If a Primary Key is specified then data will be upserted instead of inserted  
+	Multiple fields can be specified as the Primary Key, use double semicolons to delineate the fields (eg: field1;;field2)  
+	The Primary Key should be specified when creating a DataStore, afterwards if no Primary Key was specified then only inserts can be performed

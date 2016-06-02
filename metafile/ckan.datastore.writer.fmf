@@ -5,21 +5,21 @@
 ! ----------------------------------------------------------------------
 ! Define the format name.
 ! ----------------------------------------------------------------------
-DEFAULT_MACRO FORMAT_SHORT_NAME CKAN WRITER
+DEFAULT_MACRO FORMAT_SHORT_NAME CKAN DATASTORE WRITER
 DEFAULT_MACRO DESTINATION_DOMAIN ""
 
-SOURCE_READER ckan.writer.writer _DESTINATION_DOMAIN    "$(DESTINATION_DOMAIN)"          \
-                                 _DESTINATION_APIKEY    "$(DESTINATION_APIKEY)"          \
-                                 _PACKAGE_ID            "$(PACKAGE_ID)"                  \
-                                 _RESOURCE_NAME         "$(RESOURCE_NAME)"               \
-                                 _RESOURCE_DESCRIPTION  "$(RESOURCE_DESCRIPTION)"        \
-                                 _UPDATE_RESOURCE       "$(UPDATE_RESOURCE)"             \
-                                 _RESOURCE_ID           "$(RESOURCE_ID)"                 \
-                                 _BATCH_SIZE            "$(BATCH_SIZE)"                  \
-                                 _PRIMARY_KEY           "$(PRIMARY_KEY)"                 \
-                                 EXPOSED_ATTRS          "$($(FORMAT_SHORT_NAME)_EXPOSE_FORMAT_ATTRS)"
+SOURCE_READER ckan.datastore.writer _DESTINATION_DOMAIN    "$(DESTINATION_DOMAIN)"        \
+                                    _DESTINATION_APIKEY    "$(DESTINATION_APIKEY)"        \
+                                    _PACKAGE_ID            "$(PACKAGE_ID)"                \
+                                    _RESOURCE_NAME         "$(RESOURCE_NAME)"             \
+                                    _RESOURCE_DESCRIPTION  "$(RESOURCE_DESCRIPTION)"      \
+                                    _UPDATE_RESOURCE       "$(UPDATE_RESOURCE)"           \
+                                    _RESOURCE_ID           "$(RESOURCE_ID)"               \
+                                    _BATCH_SIZE            "$(BATCH_SIZE)"                \
+                                    _PRIMARY_KEY           "$(PRIMARY_KEY)"               \
+                                    EXPOSED_ATTRS          "$($(FORMAT_SHORT_NAME)_EXPOSE_FORMAT_ATTRS)"
 
-FORMAT_NAME ckan.writer.writer
+FORMAT_NAME ckan.datastore.writer
 FORMAT_TYPE JAVA
 
 
@@ -43,7 +43,7 @@ DEF_LINE_BREAK ATTRIB_CHANGE
 
 
 ! ----------------------------------------------------------------------
-! Define the preamble for when CKAN Writer is the source format
+! Define the preamble for when CKAN DataStore Writer is the source format
 ! ----------------------------------------------------------------------
 SOURCE_PREAMBLE
 "DEFAULT_MACRO" SourceDataset NULL
@@ -72,7 +72,7 @@ SOURCE_DATASET \"$[SourceDataset]\"
 
 
 ! ----------------------------------------------------------------------
-! Define the preamble for when CKAN Writer is the destination format
+! Define the preamble for when CKAN DataStore Writer is the destination format
 ! ----------------------------------------------------------------------
 DESTINATION_PREAMBLE
 "DEFAULT_MACRO" DestDataset NULL
