@@ -41,5 +41,4 @@ Next click on the Parameters button to enter the following:
 **Batch Size:** The writer will upload rows of data in batches of this amount
 
 **Primary Key:** If a Primary Key is specified then data will be upserted instead of inserted  
-	Multiple fields can be specified as the Primary Key, use double semicolons to delineate the fields (eg: field1;;field2)  
-	The Primary Key should be specified when creating a DataStore, afterwards if no Primary Key was specified then only inserts can be performed
+	Multiple fields can be specified as the Primary Key, use double semicolons to delineate the fields (eg: field1;;field2)
